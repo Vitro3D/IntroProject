@@ -1,0 +1,170 @@
+
+body {
+	margin: 10px;
+	font-family: monospace;
+	/*font-family: "Work Sans", serif; */
+	font-size: 1.0rem;
+}
+
+/* Text boxes in buefy are really meant for filling in addresses and not for applications. */
+input[type=text] {
+	margin: 4px;
+	height: 25px;
+	border-radius: 6px;
+	padding-bottom: 4px;
+	padding-left: 5px;
+	padding-right: 5px;
+	padding-top: 4px;
+	font-size: 1.0rem;
+}
+
+/* Override buefy which is a little too rounded */
+.button.is-rounded {
+	border-radius: 15px;
+	border-color: black;
+}
+
+.button.is-small.is-rounded {
+	border-radius: 10px;
+}
+
+/* Reduce the padding of buefy tabs */
+.b-tabs .tab-content {
+	padding: 3px;
+}
+
+/* default tick size of 0.75rem is too small */
+.b-slider .b-slider-tick-label {
+	font-size: 1.0rem;
+}
+
+/* The container the 3d view is within. Determines the size of the 3d view. */
+#renderer_container {
+	position: relative;		/* needed so the crosshairs have a parent that is positioned so they stay centered. */
+	width: 800px; 				/* The width of the 3d view */
+	height: 680px; 			/* The height of the 3d view */
+	border:5px solid rgb(50,50,100); 
+	border-radius: 5px
+}
+
+/* The column to the right of the viewer containing the view options */
+#view_column {
+	border: 2px solid rgb(50,50,100); 
+	border-radius: 5px;
+	width: 400px;
+	margin-left: 3px;
+	padding: 5px;
+}
+
+.taskItem {
+	color: rgb(50, 50, 100);
+	font-style: italic;
+	font-size: smaller;
+}
+
+.errorMsg {
+	color: rgb(200, 100, 100);
+	font-style: italic;
+	font-size: smaller;
+}
+
+
+/* The crosshairs in the center of the 3d view */
+.centered_overlay  {
+	position: absolute;
+	display: grid;
+	align-items: center;
+	justify-items: center;
+	width: 100%;
+	height: 100%;
+	grid-template-columns: 100%;
+	grid-template-rows: 100%;
+	pointer-events: none;
+	user-select: none;
+}
+
+
+/* The actual crosshairs graphic */
+#crosshairs {
+	opacity: 0.95; 
+	z-index: 0;
+	width: 38px;
+}
+
+/* The circle that appears when rotating */
+#trackball_circle {
+	opacity: 0.75; 
+	z-index: 0;
+	height: 90%;
+}
+
+.mainTitle {
+	font-size: 1.2rem;
+	font-weight: bold;
+	font-style: italic;
+}
+
+/* section title level 1 */
+.btitle {
+	font-size: larger;
+	font-weight: bold;
+	margin-bottom: 4px ;
+}
+
+/* section title level 2 */
+.btitle2 {
+	font-weight: bold;
+	margin-bottom: 2px;
+	margin-top: 10px;
+	margin-left: 2px;
+	font-size: larger;
+}
+
+/* section title level 3 */
+.btitle3 {
+	font-weight: bold;
+	margin-bottom: 0px;
+	margin-top: 6px;
+	margin-left: 0px;
+}
+
+/* defines a group of related fields combined into a single box */
+.bordered {
+	border: 1px solid rgb(102, 102, 102);
+	border-radius: 5px; 
+	padding: 10px 10px 5px 10px;
+	margin-left: 0px;		/* inline with the title */
+	margin-right: 3px;
+	margin-bottom: 10px;
+	position: relative; 	/* Allows contained elements to be 'centered' with the 'absolute' position tag */
+}
+
+.infoHeader {
+	border: 1px solid rgb(199, 199, 199);
+	font-size: smaller;
+	padding: 3px;
+}
+
+.infoCell {
+	border: 1px solid rgb(199, 199, 199);
+	font-size: smaller;
+	padding: 3px;
+}
+
+.fieldLabel {
+	vertical-align: middle;
+}
+
+/* Input box for small numbers */
+.smallInputBox {
+	width: 50px; 
+	text-align: center; 
+	font-size: 1.0rem
+}
+
+.importantValue {
+	color: darkblue;
+	font-style: italic;
+	font-size: 1.1rem;
+	font-weight: bold;
+}

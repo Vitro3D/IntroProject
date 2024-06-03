@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+<HEAD>
+	<title>Intro Project</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<link rel="icon" href="/assets/vitro-icon-white.jpg">
+
+	<!-- Buefy provides the stylized controls. https://buefy.org/documentation/ -->
+	<link rel="stylesheet" type="text/css" href="/css/buefy.css"/> 
+	<link rel="stylesheet" type="text/css" href="/css/materialdesignicons.min.css"/> <!-- for UI icons  https://pictogrammers.com/library/mdi/  -->
+	<link rel="stylesheet" type="text/css" href="/css/intro-project.css"/>  <!-- The main internal css page -->
+	
+	<script type="module" src="/javascript/intro-project.js"></script>
+</HEAD>
+
+<BODY>
+	<div id='vue-container' style='display:none; margin-left: 5px' >
+		<div class=mainTitle>Intro Project Title
+		</div>
+
+		<table><tr>
+			<!-- 3-dimensional renderer -->
+			<td>
+				<div id="renderer_container">
+					<canvas v-once id="view_canvas" style='position: absolute; top: 0px; left: 0px; width: 100%; height: 100%; overflow: hidden;'></canvas>
+					<!-- crosshairs and trackball -->
+					<div class="centered_overlay">
+						<img src='/assets/target.png' id="crosshairs" />
+					</div>
+					<div class="centered_overlay">
+						<img src='/assets/trackball-circle.png' id="trackball_circle" />
+					</div>
+				</div>
+			</td>
+
+			<!-- Column right of the renderer -->
+			<td style="width: 410px; padding-left: 5px">
+				<!-- View Options -->
+				<div class=btitle3 style='margin-top: 0px'>View Options</div>
+				<div class=bordered style="margin-bottom:0px">
+					<table>
+						<tr>
+							<td style='width: 180px'><b-checkbox type=checkbox v-model="showModels" @click=updateView>Show Models</b-checkbox></td>
+						</tr>
+					</table>
+				</div>
+				<div>
+					<b-button label="Test" type="is-primary" style='margin-top: 8px;' rounded @click=onTest title="."></b-button><br>
+					<input type=text class=smallInputBox style='width: 80px;' v-model.number='testNumber' title="Number to multilpy"/> 
+					<b-button label="Multiply" type="is-primary" style='margin-top: 8px; margin-left: 10px;' rounded @click=onTest2 title="."></b-button> 
+				</div>
+				<div>
+					Server message:<br>
+					{{ serverText }}
+				</div>
+			</td>
+		</tr></table>
+				
+		<!-- Below the renderer -->
+		<b-tabs style='width: 1200px;' v-model='activeTab'>
+			<!-- MODEL TAB -->
+			<b-tab-item label="Models" style="padding: 5px">
+				<div class="bordered">
+					<div class=btitle2>Models</div>
+					<div v-if='modelInfos.length == 0' style="padding-top: 5px">
+						No models loaded.
+					</div>
+					<!-- MODELS TABLE -->
+					<table style="margin-top:10px;" v-else>
+						<tr>
+							<th class=infoHeader style='width: 30px;' title="Change model visibility"></th>
+							<th class=infoHeader style='width: 200px'>Name</th>
+							<th class=infoHeader style='width: 50px; text-align: right' title="The number of triangles in the model">Facets</th>
+							<th class=infoHeader style='width: 150px; text-align: right' title="The size of the loaded model in inches.">Dimensions (mm)</th>
+							<th class=infoHeader style='width: 370px;'>Transform</th>
+							<th class=infoHeader style='width: 50px;' title="Delete the model">Del</th>
+						</tr>
+
+						<tr v-for='(model, index) of modelInfos' @click='onModelRowClicked(index)' >
+							<td class=infoCell> <!-- view -->
+								<b-icon style='color: #87888b; cursor: pointer' :icon="modelIsVisible[index] ? 'eye-outline' : 'eye-closed'" @click='onModelVisible(index)'></b-icon>
+							</td>
+							<td class=infoCell style='text-align: left' >{{ model.filename }}</td>
+							<td class=infoCell style='text-align: right; padding-left: 20px' >{{ (model.numFacets / 1000).toFixed(1) }}K</td>
+							<td class=infoCell style='text-align: right; padding-left: 20px' >{{ model.dimensions.x.toFixed(1) }} x {{ model.dimensions.y.toFixed(1) }} x {{ model.dimensions.z.toFixed(1) }}</td>
+							<!-- Transform -->
+							<td class=infoCell>
+								<div>
+									<b-field style='margin: 3px' v-if='model.isSelected'>
+										<!--<b-radio-button size='is-small' style='width: 70px;' v-model="transformType" :native-value=0>Translate</b-radio-button>-->
+										<b-radio-button size='is-small' style='width: 60px;' v-model="transformType" :native-value=1>Rotate</b-radio-button>
+										<b-radio-button size='is-small' style='width: 60px;' v-model="transformType" :native-value=2>Scale</b-radio-button>
+									
+										<span v-if='transformType == 0 || transformType == 1' style='margin-left: 10px'>
+											<b-button size='is-small' style='width: 35px; color: red;' @click='transformType == 0 ? translateModel(-1.0, 0, 0) : rotateModel(1,0,0,-15)'>-X</b-button>
+											<b-button size='is-small' style='width: 35px; color: red' 							@click='transformType == 0 ? translateModel(1.0, 0, 0) :  rotateModel(1,0,0,15)'>+X</b-button>
+											<b-button size='is-small' style='width: 35px; color: green; margin-left: 5px;'@click='transformType == 0 ? translateModel(0, -1.0, 0) : rotateModel(0,1,0,-15)'>-Y</b-button>
+											<b-button size='is-small' style='width: 35px; color: green' 						@click='transformType == 0 ? translateModel(0, 1.0, 0) :  rotateModel(0,1,0,15)'>+Y</b-button>
+											<b-button size='is-small' style='width: 35px; color: blue; margin-left: 5px;' @click='transformType == 0 ? translateModel(0, 0, -1.0) : rotateModel(0,0,1,-15)'>-Z</b-button>
+											<b-button size='is-small' style='width: 35px; color: blue' 							@click='transformType == 0 ? translateModel(0, 0, 1.0) :  rotateModel(0,0,1,15)'>+Z</b-button>
+										</span>
+										<span v-else style='margin-left: 10px'>
+											<b-button size='is-small' style='width: 50px;' @click='scaleModel(1 / 1.25)'>-25%</b-button>
+											<b-button size='is-small' style='width: 50px;' @click='scaleModel(1 / 1.05)'>-5%</b-button>
+											<b-button size='is-small' style='width: 50px;' @click='scaleModel(1.05)'>+5%</b-button>
+											<b-button size='is-small' style='width: 50px;' @click='scaleModel(1.25)'>+25%</b-button>
+										</span>
+									</b-field>
+								</div>
+							</td>
+							<!-- delete -->
+							<td class=infoCell>
+								<b-icon style='margin-top: 5px; color: #87888b; cursor: pointer' icon="trash-can" @click='onDeleteModel(index)'></b-icon>
+							</td>
+						</tr>
+					</table>
+					<b-button type="is-primary" style='margin-top: 5px' rounded label="Load STL"  @click=onLoadStl title="Add an STL file from a file into the scene. Files can also be dragged onto the view."></b-button>
+				</div>
+			</b-tab-item>
+
+			<b-tab-item label="Test">
+				<div>
+					<b-button label="Test" type="is-primary" style='margin-top: 8px;' rounded @click=onTest title="."></b-button> 
+				</div>
+			</b-tab-item>
+
+	</div> <!-- Vue container -->
+</BODY>

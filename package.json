@@ -1,0 +1,24 @@
+{
+	"name": "intro-project",
+	"author": "Vitro3D",
+	"version": "0.1.0",
+	"description": "Simple program used as an introduction to the technology used at Vitro.",
+	"main": "server/server-main.js",
+	"type": "module",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1"
+	},
+	"dependencies": {
+		"@mdi/font": "^7.4.47",
+		"buefy": "github:buefy/buefy#buefy-next",
+		"colors": "^1.4.0",
+		"express": "^4.18.2",
+		"fs": "0.0.1-security",
+		"mkdirp": "^0.5.6",
+		"path": "^0.12.7",
+		"socket.io": "^4.7.1",
+		"socket.io-client": "^4.7.3",
+		"url": "^0.11.1",
+		"vue": "^3.3.4"
+	}
+}
