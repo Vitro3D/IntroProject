@@ -1,11 +1,12 @@
 To run:
 1. Install Node.js on the machine set to be the web server. Can be a laptop or any machine.
-2. Install git on the machine.
+2. Install git on the machine. Download SourceTree for a nice GUI that wraps around it.
 3. The repository is https://github.com/mhartloff/intro-project.git. Clone this repo onto the machine.
 4. On the command line type 'npm update' from the code's directory. This will install the depenent libraries and should only have to be done once.
-5. Update the file 'server/configuration.js'. It contains options specific to the installed machine.
-6. On the command line type 'node .\server\server-main.js'. This will start the server.
-7. From a web browser, navigate to 'https://localhost/intro-project.html'. Replace localhost with the IP if installed on a remote server.
+5. Install VS Code on your machine.
+6. In VS code open the directory the code has been downloaded to. 
+7. Pressing F5 should execute the server (it looks at launch.js for the proper settings). Just FYI, to start from the command line (such as on a user machine) type 'node .\server\server-main.js' to execute the program.
+8. From a web browser, navigate to 'https://localhost/intro-project.html'. Replace localhost with the IP if installed on a remote server.
 
 Directory Structure
  node_modules	Third party libraries installed by npm.
