@@ -78,10 +78,12 @@ class IntroProject {
 			data() {
 				return {
 					// All reactive variables. When any of these change the DOM will update.
-					activeTab: 			0,							// The tab index currently being displayed. 0=leftmost. 
-					showModels: 		true,						// View the loaded models.
-					serverText:			'no server message',
-					testNumber:			0,
+					activeTab: 				0,							// The tab index currently being displayed. 0=leftmost. 
+					showModels: 			true,						// View the loaded models.
+					serverPingMessage:	'Press the Test Server Ping to Ping the server!',
+					operationResponse:   'Update inputs to run operation',
+					testNumber:				0,
+					testNumber2:			0,
 
 					// Models Tab
 					transformType: 	1,							// 0: Translation, 1: Rotation, 2: Scale
@@ -254,11 +256,11 @@ class IntroProject {
 		
 		this.socket.on("test recieved", (buffer) => {
 			var file = new BinaryFile(buffer);
-			this.vue.serverText = file.readString();
+			this.vue.serverPingMessage = file.readString();
 		})
 
 		this.socket.on("test2 received", (string) => {
-			this.vue.serverText = string;
+			this.vue.operationResponse = string;
 		})
 	}
 	
@@ -315,7 +317,7 @@ class IntroProject {
 	}
 
 	test2() {
-		this.socket.emit("test2", this.vue.testNumber);
+		this.socket.emit("test2", {a: this.vue.testNumber, b: this.vue.testNumber2});
 	}
 
 	resetAll () {

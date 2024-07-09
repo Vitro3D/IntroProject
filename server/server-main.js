@@ -173,9 +173,9 @@ io.on('connection', function (socket) {
 		this.emit("test recieved", responseFile.getBuffer());	// respond to the client
 	});
 
-	socket.on('test2', function (val) {	// val is a float.
-		var s = val * 2;
-		this.emit("test2 received", `${val} * 2 = ${s}`);	// can return values like strings.
+	socket.on('test2', function (data) {	// val is a float.
+		var s = parseInt(data.a, 10) * parseInt(data.b, 10);
+		this.emit("test2 received", `${data.a} * ${data.b} = ${s}`);	// can return values like strings.
 	});
 
 
