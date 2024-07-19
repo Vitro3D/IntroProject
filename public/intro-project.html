@@ -47,13 +47,23 @@
 					</table>
 				</div>
 				<div>
-					<b-button label="Test" type="is-primary" style='margin-top: 8px;' rounded @click=onTest title="."></b-button><br>
+					<b-button label="Server Ping Test" type="is-primary" style='margin-top: 8px;' rounded @click=onTest title="."></b-button><br>
+					Server message:<br>
+					{{ serverPingMessage }}
+					<br>
+					<br>
+
+					Multiply Inputs: <br>
 					<input type=text class=smallInputBox style='width: 80px;' v-model.number='testNumber' title="Number to multilpy"/> 
+					<input type=text class=smallInputBox style='width: 80px;' v-model.number='testNumber2' title="Number to multilpy"/> 
+					<br>
 					<b-button label="Multiply" type="is-primary" style='margin-top: 8px; margin-left: 10px;' rounded @click=onTest2 title="."></b-button> 
+					<br>
+					Multiply Result:<br>
+					{{ operationResponse }}
 				</div>
 				<div>
-					Server message:<br>
-					{{ serverText }}
+
 				</div>
 			</td>
 		</tr></table>
